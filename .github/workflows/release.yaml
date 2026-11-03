@@ -26,7 +26,7 @@ jobs:
         # a new release is created:
         if: ${{ steps.release.outputs.release_created }}
       - name: Setup node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
         if: ${{ steps.release.outputs.release_created }}
