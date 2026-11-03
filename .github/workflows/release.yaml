@@ -1,0 +1,44 @@
+name: release
+on:
+  workflow_call:
+    secrets:
+      NPM_REPOSITORY_USER:
+        required: true
+      NPM_REPOSITORY_TOKEN:
+        required: true
+
+env:
+  NPM_REPOSITORY_USER: ${{ secrets.NPM_REPOSITORY_USER }}
+  NPM_REPOSITORY_TOKEN: ${{ secrets.NPM_REPOSITORY_TOKEN }}
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: google-github-actions/release-please-action@v4
+        id: release
+        with:
+          release-type: node
+          package-name: labs-sdk-ts
+      # The logic below handles the npm publication:
+      - uses: actions/checkout@v4
+        # these if statements ensure that a publication only occurs when
+        # a new release is created:
+        if: ${{ steps.release.outputs.release_created }}
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+        if: ${{ steps.release.outputs.release_created }}
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-output
+      - name: Display structure of downloaded dist files
+        run: ls -R
+        working-directory: dist/
+      - name: Publish to npm
+        run: |
+          npm ci
+          npm publish
+        if: ${{ steps.release.outputs.release_created }}

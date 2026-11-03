@@ -1,0 +1,10 @@
+node_modules
+dist
+example/dist
+coverage
+package-lock.json
+.DS_Store
+
+# editor
+.idea
+.vscode

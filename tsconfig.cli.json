@@ -1,0 +1,7 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "sourceMap": true
+  },
+  "include": ["src/cli.ts", "src/cli/**/*.ts"]
+}

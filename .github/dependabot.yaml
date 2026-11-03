@@ -1,0 +1,18 @@
+version: 2
+registries:
+  npm-jfrog:
+    type: npm-registry
+    url: https://discovery.jfrog.io/artifactory/api/npm/npm/
+    token: ${{ secrets.ARTIFACTORY_ACCESS_TOKEN }}
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      day: sunday
+      interval: weekly
+  - package-ecosystem: npm
+    directory: /
+    registries:
+      - npm-jfrog
+    schedule:
+      interval: monthly

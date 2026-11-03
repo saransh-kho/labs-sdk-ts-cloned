@@ -1,0 +1,24 @@
+# GitHub CODEOWNERS file
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Code owners are automatically requested for review
+# when someone opens a pull request that modifies code that they own.
+
+* @wbd-streaming/labs
+
+# Default infra folders to ICE IE
+infra/** @wbd-streaming/infrastructure-engineering
+
+# Database
+infra/terraform/*aurora*/** @wbd-streaming/database-reliability
+infra/terraform/*dynamodb*/** @wbd-streaming/database-reliability
+infra/terraform/*elasticache*/** @wbd-streaming/database-reliability
+infra/terraform/*keyspace*/** @wbd-streaming/database-reliability
+
+# Workflows
+.github/workflows/rde-* @wbd-streaming/rde-delivery
+.github/workflows/infra-* @wbd-streaming/infrastructure-engineering
+
+# OMD Files
+.omd/** @wbd-streaming/service-catalog
+.github/workflows/dot-omd-validate-transform.yaml @wbd-streaming/service-catalog

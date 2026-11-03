@@ -1,0 +1,136 @@
+<!-- By @SilvenLEAF -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Labs SDK Testing from HTML</title>
+    </head>
+
+    <body>
+    <script type="importmap">
+      {
+        "imports": {
+          "./Labs": "../dist/labs-sdk-dev.js"
+        }
+      }
+    </script>
+    <script type="module">
+        import * as Labs from "./Labs"
+        import { PublishedExperimentWithAudienceFixture } from "../fixtures.js"
+        
+        console.log("ES Module loaded successfully");
+
+        var element = document.getElementById('header')
+        element.innerText += (' ' + Labs.getSDKVersion())
+
+        // Make sure these are available globally
+        window.Labs = Labs
+        window.Fixture = PublishedExperimentWithAudienceFixture
+        
+        console.log("Labs and Fixture set on window:", !!window.Labs, !!window.Fixture);
+        
+        // Enable buttons after module loads
+        document.getElementById('test1Btn').disabled = false;
+        document.getElementById('test2Btn').disabled = false;
+    </script>
+
+    <script>
+      function testingIt() {
+        if (!window.Labs || !window.Fixture) {
+          console.error("Labs or Fixture not loaded yet. Please wait for the page to fully load.");
+          alert("SDK not loaded yet. Please wait for the page to fully load and try again.");
+          return;
+        }
+        
+        document.getElementById('header').style.color = 'red';
+        let sdkConfig = {
+          trackUrl: "https://dev.api.discomax.com/labs/api/v1/decision/track", // Dev
+          experimentId: window.Fixture.experiment_id,
+        };
+        let sdk = window.Labs.NewSDK(sdkConfig, window.Fixture);
+        console.log("SDK Config:", sdkConfig);
+        console.log("Fixture:", window.Fixture);
+        console.log("Audience Group:", window.Fixture.audience_group);
+        console.log("Context:", {
+          appVersion: "26.0.1",
+          appExperience: "hbomax",
+          contentExperienceTerritory: "us",
+          flavor: "",
+          userId: "userid:bolt:3aea98e4-42a1-4696-bbec-03ce44ebda9a",
+          platform: "IOS"
+        });
+        
+        let decision = sdk.getDecision({
+          experimentId: window.Fixture.experiment_id,
+          seedId: "BrowserBasedSeed",
+          context: {
+            appVersion: "26.0.1",
+            appExperience: "hbomax",
+            contentExperienceTerritory: "us",
+            flavor: "",
+            userId: "userid:bolt:3aea98e4-42a1-4696-bbec-03ce44ebda9a",
+            platform: "IOS"
+          }
+        });
+        console.log("Experiment ID:", window.Fixture.experiment_id);
+        console.log("Decision:", decision);
+      }
+
+  function trackingIt() {
+    if (!window.Labs || !window.Fixture) {
+      console.error("Labs or Fixture not loaded yet. Please wait for the page to fully load.");
+      alert("SDK not loaded yet. Please wait for the page to fully load and try again.");
+      return;
+    }
+    
+    let sdkConfig = {
+      //in-cluster:
+      // http://labs-decision-api-web-microservice.labs-decision-api.svc.cluster.local:8000/api/v1/decision/track
+
+      //Internet:
+      // trackUrl: "http://localhost:8000/api/v1/decision/track", // Local Debugging
+      // trackUrl: "https://prd.api.discomax.com/labs/api/v1/decision/track", // Prod
+      // trackUrl: "https://stg.api.discomax.com/labs/api/v1/decision/track", // Stage
+      // trackUrl: "https://int.api.discomax.com/labs/api/v1/decision/track", // Int
+      trackUrl: "https://dev.api.discomax.com/labs/api/v1/decision/track", // Dev
+
+      experimentId: window.Fixture.experiment_id,
+    };
+
+    let sdk = window.Labs.NewSDK(sdkConfig, window.Fixture);
+    console.log("SDK Config:", sdkConfig);
+    console.log("Fixture:", window.Fixture);
+    console.log("Audience Group:", window.Fixture.audience_group);
+    console.log("Context:", {
+      appVersion: "26.0.1",
+      appExperience: "hbomax",
+      contentExperienceTerritory: "us",
+      flavor: "",
+      userId: "userid:bolt:3aea98e4-42a1-4696-bbec-03ce44ebda9a",
+      platform: "IOS"
+    });
+    
+    let decision = sdk.getDecision({
+      seedId: "BrowserBasedSeed",
+      experimentId: window.Fixture.experiment_id,
+      context: {
+        appVersion: "26.0.1",
+        appExperience: "hbomax",
+        contentExperienceTerritory: "us",
+        flavor: "",
+        userId: "userid:bolt:3aea98e4-42a1-4696-bbec-03ce44ebda9a",
+        platform: "IOS"
+      }
+    });
+    console.log("Experiment ID:", window.Fixture.experiment_id);
+    console.log("Decision:", decision);
+  }
+    </script>
+    <h1 id="header">Test Labs SDK Version: </h1>
+    <h2></h2>
+    <button id="test1Btn" onclick="testingIt()" disabled>Simple test!</button>
+    <button id="test2Btn" onclick="trackingIt()" disabled>Tracking test!</button>
+  </body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "name": "labs-sdk",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "imported.js",
+  "scripts": {
+    "start": "node imported.js"
+  },
+  "author": "",
+  "license": "ISC"
+}

@@ -1,0 +1,25 @@
+# For additional assistance related to OMD, feel free to connect with the team on the Slack channel #wbd-omd-help.
+name: dot-omd-validate-transform
+on:
+  pull_request:
+    paths:
+      - ".omd/**"
+      - ".github/workflows/dot-omd-validate-transform.yaml"
+jobs:
+  now-yaml-validate-transform:
+    uses: wbd-streaming/wbd-common-workflows/.github/workflows/dot-omd-pull-request.yaml@v4
+    with:
+      generate_catalog_info: true
+    permissions:
+      checks: write
+      contents: write
+      id-token: write
+      pull-requests: write
+    secrets: inherit
+  pr-ready:
+    needs:
+      - now-yaml-validate-transform
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo ".omd Validated"

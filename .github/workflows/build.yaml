@@ -1,0 +1,27 @@
+name: build
+on:
+  workflow_call:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+      - name: Install dependencies
+        run: npm install
+      - name: Build
+        id: build
+        run: npm run build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-output
+          path: |
+            dist/
+            package-lock.json

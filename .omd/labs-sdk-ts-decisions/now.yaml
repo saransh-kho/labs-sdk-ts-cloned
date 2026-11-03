@@ -1,0 +1,22 @@
+omd_service: labs-sdk-ts
+
+omd_component:
+  name: labs-sdk-ts-decisions
+  omd_type: sdk
+  description: TypeScript library for running experiments on JS clients
+  omd_compliance: none
+  omd_cell: labs-sdk-ts
+  omd_tier: tier-4
+  subdivision_strategy: global
+  deployment_strategy: single
+  omd_sdm_owner_email: bill.meehan@wbd.com
+  omd_team: "CD EXP LAI Labs: APIs & Integration"
+
+omd_jira_project:
+  name: CD
+  jira_board: https://wbdstreaming.atlassian.net/jira/software/c/projects/CD/boards/21138
+
+omd_schema_version: v1.2.0
+
+# Used for tracking the repository in WBD inventory. Do not remove or alter the content.
+inventory_id: 980162270ee0cf69c2e3a0a0a87dd93d-e8e885e0931c2c609d3059f840c02b70

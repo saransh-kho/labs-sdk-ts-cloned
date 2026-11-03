@@ -1,0 +1,21 @@
+name: build-and-release
+on:
+  push:
+    branches:
+      - main
+      - "release-v**"
+jobs:
+  build:
+    uses: ./.github/workflows/build.yaml
+    name: Build
+  test:
+    uses: ./.github/workflows/test.yaml
+    name: Test
+    needs: build
+  release:
+    uses: ./.github/workflows/release.yaml
+    name: Release
+    needs: [build, test]
+    secrets:
+      NPM_REPOSITORY_USER: ${{ secrets.WBD_NPM_JFROG_RW_USERNAME }}
+      NPM_REPOSITORY_TOKEN: ${{ secrets.WBD_NPM_JFROG_RW_TOKEN }}
